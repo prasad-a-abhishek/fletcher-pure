@@ -61,7 +61,7 @@ ok = verify(b"Hello", 0x1A3F)  # bool
 | Input | Fletcher-16 (mod 255) |
 |-------|----------------------|
 | `b""` (empty) | 0x0000 |
-| `b"\x00"` | 0x0101 |
+| `b"\x00"` | 0x0000 |
 | `b"\x01\x02"` | 0x0403 |
 | `b"\xff\xff"` | 0x0000 |
 | `b"123456789"` | 0x1EDE |
@@ -78,7 +78,7 @@ ok = verify(b"Hello", 0x1A3F)  # bool
 ## Acceptance Criteria
 
 1. `checksum(b"")` returns 0.
-2. `checksum(b"\x00")` returns 257 (0x0101).
+2. `checksum(b"\x00")` returns 0 (per RFC 3309 §5.1: c0=c1=0 initialization, mod-255).
 3. `checksum(b"\x01\x02")` returns 1027 (0x0403).
 4. `checksum(b"\xff\xff")` returns 0 (mod-255 wrap).
 5. `verify(data, checksum(data))` returns True for all valid inputs.

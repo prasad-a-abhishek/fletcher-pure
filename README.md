@@ -11,7 +11,7 @@
 ## Quick Start
 
 ```bash
-pip install git+https://github.com/prasad-a-abhishek/fletcher-pure.git
+pip install -e .
 ```
 
 ```python
@@ -48,7 +48,7 @@ Compute the Fletcher-16 checksum (mod 255) of `data`.
 
 ```python
 checksum(b"")           # 0
-checksum(b"\x00")       # 257
+checksum(b"\x00")       # 0 (c0=c1=0 initialization per RFC 3309 §5.1)
 checksum(b"\x01\x02")   # 1027
 checksum(b"\xff\xff")   # 0 (mod-255 wrap)
 checksum(b"123456789")  # 0x1EDE = 7662
