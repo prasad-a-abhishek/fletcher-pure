@@ -1,0 +1,103 @@
+{
+  "seed": 987654321,
+  "started_utc": "2026-09-13T06:20:07.604297+00:00",
+  "elapsed_seconds": 28.07,
+  "target": "fletcher_pure @ wt/cycle_69-adversary-04 (built from 93ae129)",
+  "sweep_a_checksum_correctness": {
+    "iterations": 100000,
+    "raises": 0,
+    "invariant_violations": 0,
+    "sample_bad_cases": []
+  },
+  "sweep_b_verify_roundtrip_sentinels": {
+    "iterations": 50000,
+    "raises": 0,
+    "invariant_violations": 0,
+    "sample_bad_cases": []
+  },
+  "sweep_c_s3_repro": {
+    "raises": 0,
+    "invariant_violations": 0,
+    "notes": [
+      [
+        "list[int]",
+        "correct_silent",
+        "1027"
+      ],
+      [
+        "tuple[int]",
+        "correct_silent",
+        "1027"
+      ],
+      [
+        "memoryview(bytes)",
+        "correct_silent",
+        "1027"
+      ],
+      [
+        "bytes subclass",
+        "correct_silent",
+        "1027"
+      ],
+      [
+        "str",
+        "typeerror_ok",
+        ""
+      ],
+      [
+        "None",
+        "typeerror_ok",
+        ""
+      ],
+      [
+        "int",
+        "typeerror_ok",
+        ""
+      ],
+      [
+        "float",
+        "typeerror_ok",
+        ""
+      ]
+    ]
+  },
+  "sweep_d_rfc_vectors": {
+    "raises": 0,
+    "invariant_violations": 0,
+    "notes": [
+      [
+        "b''",
+        "got=0x0000 want=0x0000",
+        "pass"
+      ],
+      [
+        "b'\\x00'",
+        "got=0x0000 want=0x0000",
+        "pass"
+      ],
+      [
+        "b'\\x01\\x02'",
+        "got=0x0403 want=0x0403",
+        "pass"
+      ],
+      [
+        "b'\\xff\\xff'",
+        "got=0x0000 want=0x0000",
+        "pass"
+      ],
+      [
+        "b'\\xfe\\x01'",
+        "got=0xfe00 want=0xfe00",
+        "pass"
+      ],
+      [
+        "b'123456789'",
+        "got=0x1ede want=0x1ede",
+        "pass"
+      ]
+    ]
+  },
+  "total_iterations": 150000,
+  "total_raises": 0,
+  "total_invariant_violations": 0
+}
