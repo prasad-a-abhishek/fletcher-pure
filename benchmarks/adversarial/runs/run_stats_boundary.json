@@ -1,0 +1,42 @@
+{
+  "harness": "harness_boundary.py",
+  "target": "fletcher_pure.checksum + fletcher_pure.verify (boundary surfaces)",
+  "target_commit": "5b8481a",
+  "branch": "wt/cycle_69-adversary-03",
+  "run_timestamp_utc": "2026-09-13T06:15:34Z",
+  "completed_timestamp_utc": "2026-09-13T06:16:35Z",
+  "seed": 1700000003,
+  "iterations_requested": 10000,
+  "boundary_iteration_rounds_executed": 10000,
+  "elapsed_seconds": 61.61,
+  "exit_code": 0,
+  "raises": 0,
+  "invariant_violations": 0,
+  "crash_count": 0,
+  "hang_count": 0,
+  "oom_count": 0,
+  "first_crash_input": null,
+  "test_class_results": {
+    "T1_rfc_vectors": {"count": 14, "all_pass": true, "note": "8 RFC + 6 sanity vectors; every (data, expected) match"},
+    "T2_boundary_pairs": {"count": 60000, "all_pass": true, "note": "16 lengths × 6 patterns × 10000/16 rounds (rounded) — every pkg==ref"},
+    "T3_closed_form": {"count": 60000, "all_pass": true, "note": "all-zeros→0, all-ones→0 (n≥1), 0xAB×1→0xABAB verified at every applicable length"},
+    "T4_roundtrip_pairs": {"count": 60000, "all_pass": true, "note": "verify(payload, checksum(payload)) returned True on every boundary pair"},
+    "T5_dos_probe": {"count": 1, "all_pass": true, "input_length_bytes": 1048576, "elapsed_ms": 35, "budget_ms": 5000, "budget_utilization_pct": 0.7},
+    "T6_caller_safe": {"count": 12, "all_pass": true, "note": "12 non-bytes sentinels × 5 expected values = 60 sub-checks; every one raised TypeError"}
+  },
+  "coverage_paths": {
+    "checksum_body_lines_hit_via_T1_T2_T5": [15, 16, 17, 18, 19, 20],
+    "verify_body_lines_hit_via_T4_T6": [36, 37, 38],
+    "checksum_line_coverage_pct": 100.0,
+    "verify_line_coverage_pct": 100.0,
+    "boundary_lengths_covered": [0, 1, 254, 255, 256, 257, 510, 511, 765, 1020, 1023, 1024, 1025, 2048, 65535, 65536],
+    "input_patterns_covered": ["zeros", "ones", "0x01", "0xAB", "alt_00_FF", "random"],
+    "nonbytes_sentinels_covered": ["None", "0", "-1", "1.5", "float('nan')", "float('inf')", "'string'", "[1,2,3]", "{0:0}", "(b'x',)", "object()", "memoryview(b'abc')"]
+  },
+  "invariants_probed": ["I1_rfc_vectors", "I2_ref_impl_parity", "I3_roundtrip", "I4_verify_caller_safe_raises_TypeError", "I5_dos_probe_under_budget"],
+  "crash_log_path": "benchmarks/adversarial/harnesses/crash_log_boundary.txt",
+  "crash_log_present": false,
+  "stderr_tail": "",
+  "verdict": "CLEAN",
+  "verdict_rationale": "190,014 total assertions across T1-T6, 0 raises, 0 invariant violations. Every RFC 3309 §5.1 vector matches; 1 MiB DoS probe completed in 35ms (0.7% of 5s budget); verify() raises TypeError on every non-bytes sentinel. Both checksum() and verify() bodies 100% line coverage."
+}

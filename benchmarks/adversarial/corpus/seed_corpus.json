@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "purpose": "Canonical seed corpus for cycle_69/adversary/03 fuzzing campaign (fletcher-pure v0.1.0)",
+    "target_commit": "5b8481a",
+    "branch": "wt/cycle_69-adversary-03",
+    "generated_at_unix": 1789279862,
+    "generator": "manual + algorithm-derived per RFC 3309 §5.1",
+    "harnesses_under_test": [
+      "harness_checksum.py",
+      "harness_verify_roundtrip.py",
+      "harness_boundary.py"
+    ],
+    "notes": "This corpus is the canonical reference for slot-04 triage (findings.jsonl) and slot-05 FUZZING_REPORT. Each entry has a stable id (e.g. R-001) so findings can be cross-referenced. Values are base64 for binary bytes; unicode strings are stored as their original text under 'repr' for round-trip."
+  },
+
+  "rfc_3309_vectors": [
+    {"id": "R-001", "label": "empty bytes",                        "b64": "",                      "repr": "b''",                "expected_checksum": 0,        "source": "RFC 3309 §5.1"},
+    {"id": "R-002", "label": "single zero byte",                  "b64": "AA==",                  "repr": "b'\\x00'",           "expected_checksum": 0,        "source": "RFC 3309 §5.1 / audit S8"},
+    {"id": "R-003", "label": "single 0xAB byte",                  "b64": "qw==",                  "repr": "b'\\xab'",           "expected_checksum": 43947,    "source": "audit S8 (hex 0xABAB)"},
+    {"id": "R-004", "label": "two bytes 0x01 0x02",               "b64": "AQI=",                  "repr": "b'\\x01\\x02'",       "expected_checksum": 1027,     "source": "audit S1 hand-derived"},
+    {"id": "R-005", "label": "two 0xFF — full mod-255 wrap",      "b64": "//8=",                  "repr": "b'\\xff\\xff'",       "expected_checksum": 0,        "source": "algorithm-derived"},
+    {"id": "R-006", "label": "RFC 3309 §5.1 canonical (post-fix2)","b64": "MTIzNDU2Nzg5",          "repr": "b'123456789'",      "expected_checksum": 7902,     "source": "RFC 3309 §5.1 (fix-2 remediated)"},
+    {"id": "R-007", "label": "ASCII 'a'",                         "b64": "YQ==",                  "repr": "b'a'",               "expected_checksum": 24929,    "source": "sanity (hex 0x6161)"},
+    {"id": "R-008", "label": "ASCII 'abc'",                       "b64": "YWJj",                  "repr": "b'abc'",             "expected_checksum": 19495,    "source": "sanity (hex 0x4C27)"},
+    {"id": "R-009", "label": "ASCII 'abcd'",                      "b64": "YWJjZA==",              "repr": "b'abcd'",            "expected_checksum": 55179,    "source": "sanity (hex 0xD78B)"},
+    {"id": "R-010", "label": "255 of 0x01 — c0 cycles 1..0",      "b64_repeat": {"byte": 1, "n": 255}, "repr": "b'\\x01'*255",     "expected_checksum": 0,        "source": "algorithm-derived"},
+    {"id": "R-011", "label": "single 0xFF — c0 collapses to 0",   "b64": "/w==",                  "repr": "b'\\xff'",           "expected_checksum": 0,        "source": "algorithm-derived"},
+    {"id": "R-012", "label": "single 0xFE — c0=254, c1=254",      "b64": "/g==",                  "repr": "b'\\xfe'",           "expected_checksum": 65278,    "source": "algorithm-derived (hex 0xFEFE)"},
+    {"id": "R-013", "label": "all zeros 256 bytes",               "b64_repeat": {"byte": 0, "n": 256}, "repr": "b'\\x00'*256",     "expected_checksum": 0,        "source": "audit S8"},
+    {"id": "R-014", "label": "all ones 256 — c0 collapses",       "b64_repeat": {"byte": 255, "n": 256},"repr": "b'\\xff'*256",      "expected_checksum": 0,        "source": "audit S8 (full c0 collapse mod 255)"}
+  ],
+
+  "boundary_length_classes": [
+    {"id": "B-001", "label": "length 0 (empty)",                  "length": 0},
+    {"id": "B-002", "label": "length 1",                          "length": 1},
+    {"id": "B-003", "label": "length 254 (just below mod-255)",  "length": 254},
+    {"id": "B-004", "label": "length 255 (mod-255 wrap edge)",    "length": 255},
+    {"id": "B-005", "label": "length 256 (one past wrap)",        "length": 256},
+    {"id": "B-006", "label": "length 257 (carry edge)",           "length": 257},
+    {"id": "B-007", "label": "length 510 (two-wrap boundary)",    "length": 510},
+    {"id": "B-008", "label": "length 511",                        "length": 511},
+    {"id": "B-009", "label": "length 765 (3 * 255)",              "length": 765},
+    {"id": "B-010", "label": "length 1020 (4-wrap - 1)",          "length": 1020},
+    {"id": "B-011", "label": "length 1023 (page-1)",              "length": 1023},
+    {"id": "B-012", "label": "length 1024 (page)",                "length": 1024},
+    {"id": "B-013", "label": "length 1025 (page+1)",              "length": 1025},
+    {"id": "B-014", "label": "length 2048 (KiB)",                 "length": 2048},
+    {"id": "B-015", "label": "length 65535 (u16 max)",            "length": 65535},
+    {"id": "B-016", "label": "length 65536 (u16 max + 1)",        "length": 65536}
+  ],
+
+  "pattern_classes": [
+    {"id": "P-001", "label": "all zeros",                  "generator": "b'\\x00' * n",                       "tested_at_lengths": [0, 1, 255, 256, 1024]},
+    {"id": "P-002", "label": "all ones",                   "generator": "b'\\xff' * n",                       "tested_at_lengths": [0, 1, 255, 256, 1024]},
+    {"id": "P-003", "label": "single 0x01 repeated",       "generator": "b'\\x01' * n",                       "tested_at_lengths": [1, 254, 255, 256]},
+    {"id": "P-004", "label": "single 0xAB repeated",       "generator": "b'\\xab' * n",                       "tested_at_lengths": [1, 255, 256]},
+    {"id": "P-005", "label": "alternating 0x00/0xFF",     "generator": "bytes(i%2*0xFF for i in range(n))",  "tested_at_lengths": [255, 256, 1024]},
+    {"id": "P-006", "label": "random uniform bytes",       "generator": "secrets.token_bytes(n) / random",    "tested_at_lengths": [0, 1, 16, 255, 1024, 10000]},
+    {"id": "P-007", "label": "random with seed=42 (reproducible)","generator": "random.Random(42).randbytes(n)", "tested_at_lengths": [1024, 10000]}
+  ],
+
+  "adversarial_verify_sentinels": [
+    {"id": "A-001", "label": "verify(None, anything) — must raise TypeError",   "data": null,        "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-002", "label": "verify(int, anything) — must raise TypeError",   "data": 0,           "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-003", "label": "verify(-1, anything) — must raise TypeError",    "data": -1,          "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-004", "label": "verify(1.5, anything) — must raise TypeError",   "data": 1.5,         "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-005", "label": "verify(nan, anything) — must raise TypeError",   "data": "NaN",       "expected": 0,        "expected_outcome": "TypeError", "_note": "sentinel stored as string; harness will use float('nan')"},
+    {"id": "A-006", "label": "verify(inf, anything) — must raise TypeError",   "data": "Inf",       "expected": 0,        "expected_outcome": "TypeError", "_note": "sentinel stored as string; harness will use float('inf')"},
+    {"id": "A-007", "label": "verify('string', anything) — must raise TypeError","data": "string",  "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-008", "label": "verify([1,2,3], anything) — must raise TypeError","data": [1,2,3],    "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-009", "label": "verify({0:0}, anything) — must raise TypeError", "data": {"0":0},     "expected": 0,        "expected_outcome": "TypeError"},
+    {"id": "A-010", "label": "verify((b'x',), anything) — must raise TypeError","data": [["x"]],    "expected": 0,        "expected_outcome": "TypeError", "_note": "sentinel stored as JSON array; harness uses (b'x',)"},
+    {"id": "A-011", "label": "verify(object(), anything) — must raise TypeError","data": "object()", "expected": 0,        "expected_outcome": "TypeError", "_note": "sentinel; harness creates object() at runtime"},
+    {"id": "A-012", "label": "verify(memoryview(b'abc'), anything) — audit S10 — must raise TypeError","data": "memoryview(b'abc')", "expected": 0, "expected_outcome": "TypeError"}
+  ],
+
+  "adversarial_expected_values": [
+    {"id": "E-001", "label": "expected = -1 (negative)",                 "value": -1},
+    {"id": "E-002", "label": "expected = 0x10000 (just above range)",   "value": 65536},
+    {"id": "E-003", "label": "expected = 2**32 (way above range)",      "value": 4294967296},
+    {"id": "E-004", "label": "expected = None (must not raise on bytes data)", "value": null},
+    {"id": "E-005", "label": "expected = 'string' (must not raise on bytes data)", "value": "not-a-number"},
+    {"id": "E-006", "label": "expected = True (bool subclass of int)",   "value": true},
+    {"id": "E-007", "label": "expected = False",                        "value": false},
+    {"id": "E-008", "label": "expected = [1,2,3] (uncomparable — must raise TypeError on bytes data)","value": [1,2,3]}
+  ],
+
+  "long_input_dos_probe": [
+    {"id": "L-001", "label": "1 MiB random bytes",                      "length": 1048576, "budget_ms": 5000, "source": "audit S9"},
+    {"id": "L-002", "label": "10 KiB random bytes (harness_checksum bucket 5)","length": 10240, "budget_ms": null, "source": "audit S9"}
+  ],
+
+  "execution_plan": {
+    "harness_checksum_iters": 200000,
+    "harness_verify_roundtrip_iters": 200000,
+    "harness_boundary_iters": 10000,
+    "total_iterations": 420000,
+    "seed_determinism": "All three harnesses accept --seed; reruns use the same seed.",
+    "crash_log_path_pattern": "benchmarks/adversarial/harnesses/crash_log_<harness>.txt",
+    "run_stats_path_pattern": "benchmarks/adversarial/runs/run_stats_<harness>.json",
+    "environment": "Linux container, CPython 3.11.15, no pytest/CI overhead during fuzz (harnesses run standalone)"
+  }
+}
