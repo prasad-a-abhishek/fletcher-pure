@@ -51,7 +51,7 @@ checksum(b"")           # 0
 checksum(b"\x00")       # 0 (c0=c1=0 initialization per RFC 3309 §5.1)
 checksum(b"\x01\x02")   # 1027
 checksum(b"\xff\xff")   # 0 (mod-255 wrap)
-checksum(b"123456789")  # 0x1EDE = 7662
+checksum(b"123456789")  # 0x1EDE = 7902
 ```
 
 ### `verify(data: bytes, expected: int) -> bool`
@@ -91,7 +91,7 @@ from fletcher_pure import checksum, verify
 ## Install
 
 ```bash
-pip install git+https://github.com/prasad-a-abhishek/fletcher-pure.git
+pip install -e .
 ```
 
 For development:
