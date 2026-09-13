@@ -3,7 +3,7 @@
 | spec criterion | test(s) |
 |---|---|
 | AC1: checksum(b"") == 0 | test_spec_vectors.py::TestSpecVectors::test_ac1_empty_input |
-| AC2: checksum(b"\\x00") == 257 | test_spec_vectors.py::TestSpecVectors::test_ac2_single_zero_byte |
+| AC2: checksum(b"\\x00") == 0 | test_spec_vectors.py::TestSpecVectors::test_ac2_single_zero_byte |
 | AC3: checksum(b"\\x01\\x02") == 1027 | test_spec_vectors.py::TestSpecVectors::test_ac3_two_bytes |
 | AC4: checksum(b"\\xff\\xff") == 0 | test_spec_vectors.py::TestSpecVectors::test_ac4_ff_wrap |
 | AC5: verify(data, checksum(data)) True | test_spec_vectors.py::TestSpecVectors::test_ac5_verify_roundtrip; test_verify.py::TestVerifyRoundtrip |
