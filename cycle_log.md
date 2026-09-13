@@ -1,0 +1,1 @@
+- cycle_69-fix (2026-09-13): removed broken git+https install URL from README; aligned spec AC2 and README checksum(b"\x00") from 257→0 per RFC 3309 §5.1 (impl was already correct).
