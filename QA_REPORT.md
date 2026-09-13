@@ -1,4 +1,5 @@
 # QA Report — fletcher-pure v0.1.0 (cycle 69, final QA gate)
+tests_passing: true
 
 ## Summary
 This is the final QA gate for `wt/cycle_69-fix2` (commit `5b8481a`). All 3 prior findings from cycle_69 re-run-1 are confirmed remediated. The repo has 567/567 tests green, zero dependencies, and all 10 acceptance criteria have test coverage. One documentation stale-data finding remains (COVERAGE.md AC2 value is 257 instead of 0), but the test itself is correct.
